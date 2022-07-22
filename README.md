@@ -12,8 +12,9 @@ Also contains code used to work out the functionality of various breakout boards
 2) TMP-100 temperature sensor
 3) FRAM
 4) RS-485 to UART transceiver
-5) Voltage regulators
+5) INA 219 Power measurment
 6) Level shifters
+7) MCP9600 Thermocouple readout
 
 ## FGDOS SOFTWARE
 Consists of code used to interface with the FGDOS sensor using an Arduino in a breadboard setup.
@@ -25,6 +26,10 @@ Arduino and Energia scripts used for various functional, performance and develop
 
 
 ## MISSION CODE
+
+
+## Telemetry and Commands
+
 
 
 ## Jupyter Notebooks
