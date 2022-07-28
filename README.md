@@ -39,3 +39,8 @@ This folder consists of various Jupyter Notebooks used for visulaization and dat
 3) Radiation Payload Performance - Noise, Power and Temperature
 4) Radiation Payload Performance - Proton Beam
 5) FGDOS Characterization: Irradiation and Thermal Variation
+
+## Geant4 Radiation Transport Simulations
+The simulations were run on a virtual linux machine obtained from - 
+
+This repo contains the project source folders for the simulations
