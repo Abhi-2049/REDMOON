@@ -1,19 +1,11 @@
-// RADIATION PAYLOAD FIRMWARE V1
-// By: A. Shanbhag
+// Originally: Payload_DummyPCB_Test
 
 
 /*
+ * 13/06: Setting up script to send Data from both sensors over serial, cleaning up some unnecessary code
+ * 03/08: Prep for External OSC and Longer Window Noise tests
+ * 04/08: Code commented for long WINDOW of 32768 pulses with WCK provided by Ext OSC at 32768 kHz
  * 
- * 19/07: Script created for functional testing and integration of the Radiation Payload MAIN BOARD V1 with Lunar Zebro Rover OBC
- * 05/08: Implementing Hyperion Protocol for Commands and Telemetry
- *        
- *        
- *        USEFUL RESOURCES:
- *        User Guide for MSP430FR59xx devices - http://www.ti.com/lit/pdf/slau367
- *        MSP430FR5969 Datasheet for pin functions and register descriptions - https://www.ti.com/lit/ds/symlink/msp430fr5969.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1642351946587&ref_url=https%253A%252F%252Fnl.mouser.com%252F 
- *        MSP430 driver lib library User Guide - https://dev.ti.com/tirex/explore/node?node=AANMz9MCP3TctaSCJuEa0Q__IOGqZri__LATEST 
- *        
- *        
  * 
 */
 
@@ -21,20 +13,19 @@
 #include <SPI.h>
 #include <driverlib.h>                                                                              
 
-// LaunchPad pins                     // MCU PIN Number
+// Micro pins                         // MCU PIN Number
 
 // pins for slave selection
 #define SS1 12                        // P1.4      
-#define SS2 11                        // P1.3   
+#define SS2 11                        // P1.3      
 
 // Standby pins - don't leave floating!!
 #define NSTBY_1 35                    // P3.3
 #define NSTBY_2 36                    // P4.7
 
-// Window clock signal pins
+// Window clock signal pin
 #define WCK_1 8                       // P3.4
-//float clock_check_1 = 0;                        // to check clock signal value
-
+//float clock_check = 0;                        // to check clock signal value
 
 
 // Useful masks
@@ -55,25 +46,26 @@
 #define NIRQ_ENGATE 0x0E                                                                            // NIRQ pin not used for now
 
 
-// handy constant definitions (these depend on settings in MCU and sensor!)
+// handy constant definitions (these depend on settings in Arduino and sensor!)
 #define THRESHOLD_FREQ 50000 // these values are not exact! Since only 8 MSBs are used          
 #define TARGET_FREQ 90000                                                                       
-#define CK_FREQ 31250.0f // depends on the settings of the WCK signal                              //31250
-#define WINDOW_PULSES 4096 // depends on window register settings!                                 //8192.0f
+//#define CK_FREQ 31250.0f // depends on the settings of the PWM                                     //31250
+#define CK_FREQ 32768.0f // supplied by external OSC                                               //$$ For lower noise / more precise WCK
+//#define WINDOW_PULSES 4096 // depends on window register settings!                                 //8192.0f
+#define WINDOW_PULSES 32768 // depends on window register settings!                              // $$ For longest WINDOW
 #define WINDOW_FACTOR (CK_FREQ/WINDOW_PULSES)
-#define BITSHIFT 1024                                                                              // $$ Change based on WINDOW setting and implement in FGDOS init
 
 // Function definitions
 unsigned int read_reg(byte sensor, byte reg);
 void write_reg(byte sensor, byte reg, byte data);
 bool collect_freq(byte sensor, unsigned long int *sens_freq, unsigned long int *ref_freq);
 void fgdos_init(byte sensor);
-void wait(int microsecs);                                                                           // this func may be discarded $$
+void wait(int microsecs);
 void print_freq(byte freq_reg[3],unsigned long int freq_value,char f_type);
 void print_meas_full(int temperature, unsigned long int sens_freq, unsigned long int ref_freq, byte sensor);
 void print_meas_short(int temperature, unsigned long int sens_freq, unsigned long int ref_freq, int recharge_count, byte sensor);
 
-// New Function definitions
+// New Funtion definitions
 void Clock_set_readout();
 void Clock_reset();
 
@@ -83,7 +75,7 @@ void Disable_RS485_send();
 void Read_RS485_DataBus();
 void Send_RS485_DataBus();
 
-void crc_check_16();                                                                                // TBD based on Subsystem Message Protocol
+void crc_check_16();
 
 
 
@@ -121,13 +113,12 @@ bool flag = true;
 int command_id = 0;
 
 // for receiving data
-const int message_size = 16;              // $$ number of bytes to be read
-byte message_buffer[16];                  // $$ change buffer size once protocol is decided                                       
+const int message_size = 16;              // number of bytes to be read
+byte message_buffer[16];                  // $$ change buffer size once protocol is decided                                       $$ using Hyperion protocol for now
 bool message_received = false;
-byte crc_check_command[2];                // $$ To perform CRC check on recieved data
 
 //for sending data
-const int data_message_size = 16;        // $$ number of bytes to be sent
+const int data_message_size = 16;        // number of bytes to be sent
 byte data_buffer[16];                    // $$ change buffer size once protocol is decided
 
 // for CRC check
@@ -141,27 +132,25 @@ byte crc_check_payload[2];
 // MAIN SETUP
 void setup() {
 
-  // setting RS485 pins ~RE and DE low to start listening only over RS485 Bus. Uses P2.6 on MCU                                
+  // setting RS485 pins ~RE and DE low to start listening only over RS485 Bus. Uses P2.6 on MCU                                $$ for RS485 transceiver test on Dummy PCB
   GPIO_setAsOutputPin(GPIO_PORT_P2, GPIO_PIN6);
   GPIO_setOutputLowOnPin(GPIO_PORT_P2, GPIO_PIN6);
-  
   //setting FRAM CS pin high to prevent output. Uses P3.6 on MCU
   GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN6);
   GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN6);
 
 
-
+// $$
   // WCK signal generation - Page 92 - https://dev.ti.com/tirex/explore/node?node=AANMz9MCP3TctaSCJuEa0Q__IOGqZri__LATEST 
 
-  // See also the User Guide for MSP430FR59xx devices - http://www.ti.com/lit/pdf/slau367
-  // See the MSP430FR5969 Datasheet for pin functions and register descriptions - https://www.ti.com/lit/ds/symlink/msp430fr5969.pdf?HQS=dis-mous-null-mousermode-dsf-pf-null-wwe&ts=1642351946587&ref_url=https%253A%252F%252Fnl.mouser.com%252F 
+
+  pinMode(WCK_1, OUTPUT);                                                                                                   // Try P3DIR |= 0x10 ; if this does not work
+  P3SEL1 |= 0x10 ;   //Set 3.4 to 1 to select SMCLK 
   
-  pinMode(WCK_1, OUTPUT);  // set pin direction to O/P                                                            // Try P3DIR |= 0x10 ; if this does not work
-  P3SEL1 |= 0x10 ;   //Set PxSEL registers of P3. P3SEL1.4 is set to 1 to select SMCLK as the pin function
 
 
 
-  // Start serial communication 
+  
   Serial.begin(9600);                                                                           //250000
   while(!Serial);
 
@@ -173,10 +162,9 @@ void setup() {
   pinMode(NSTBY_2, OUTPUT);
   digitalWrite(NSTBY_2, HIGH);
 */
-  //Comment the 4 lines below if using the LaunchPad and Breadboard B Setup                                                                 $$
 
+  //Comment the 4 lines below if using the LaunchPad and Breadboard B Setup                                                                 $$
   // setting NSTBY pins high using driverlib GPIO function
-  // Internal FGDOS NSTBY pins
   GPIO_setAsOutputPin(GPIO_PORT_P3, GPIO_PIN3);
   GPIO_setOutputHighOnPin(GPIO_PORT_P3, GPIO_PIN3);
   GPIO_setAsOutputPin(GPIO_PORT_P4, GPIO_PIN7);
@@ -197,7 +185,7 @@ void setup() {
   SPI.beginTransaction(SPISettings(5000000, MSBFIRST, SPI_MODE0));                                                         
   SPI.begin();
 
-  // Set Internal FGDOS CS pins to output mode and high
+  // Set CS pins to output mode and high
   pinMode(SS1, OUTPUT); //chip enable, active low
   pinMode(SS2, OUTPUT);
   digitalWrite(SS1, HIGH);
@@ -210,9 +198,10 @@ void setup() {
   // first wait for the WCK to settle, this is necessary as it is used for window!!!!
   fgdos_init(SS1);
   __delay_cycles(1000000);  
-  fgdos_init(SS2);
-  __delay_cycles(1000000);  
-                                                                                                 //$$
+  fgdos_init(SS2); 
+
+  //delay(1000);
+  __delay_cycles(1000000);                                                                                                  //$$
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
@@ -223,22 +212,29 @@ void loop() {
   payload_on_time = millis();
 
   // Set SMCLK to WCK = 31250 Hz
-  Clock_set_readout();
+  //Clock_set_readout();                                                                                                   // $$ trying with EXT OSC
 
-  __delay_cycles(1000000);                                                                 // to let the SMCLK settle
+  __delay_cycles(1000000);
 
+  //delay(1000);
+  //Clock_reset();
+  //delay(1000);
+  //__delay_cycles(1000000);
 
   
   // Sensor 1
   
   // read the temperature, recharge count and frequency registers
-  temperature_1 = read_reg(SS1,TEMP);                                                       // temperature = read_reg(SS2,TEMP) - 87; the temperature read is witout offset
+  temperature_1 = read_reg(SS1,TEMP);                                                       // temperature = read_reg(SS2,TEMP) - 87;
   recharge_count_1 = read_reg(SS1,RECHARGE_COUNT);
   recharge_count_1 = recharge_count_1 & 0x0F;
 
+  //__delay_cycles(1000000);                                                                                                                    //    $$
+
   // collect freq from sensor 1 
   collect_freq(SS1,&sens_freq_1,&ref_freq_1);
-
+  
+  //__delay_cycles(1000000);                                                                                                                    //    $$
   
   // Sensor 2
   
@@ -250,21 +246,19 @@ void loop() {
   // collect freq from sensor 2 
   collect_freq(SS2,&sens_freq_2,&ref_freq_2);
 
-
    // reset SMCLK to 8 MHz
-   Clock_reset();
-   //delay(10);
+   //Clock_reset();                                                                                                                             // $$ trying with EXT OSC
+   
    __delay_cycles(100000);
 
 
   //Print Sensor 1 & 2 measurments to Serial Monitor
   print_meas_short(temperature_1,sens_freq_1,ref_freq_1,recharge_count_1,1);
   print_meas_short(temperature_2,sens_freq_2,ref_freq_2,recharge_count_2,2);
-
 //  Serial.print("Payload ON Time: ");Serial.println(payload_on_time);
 
-   
-   __delay_cycles(1000000);                                                       // to let the SMCLK settle
+
+   __delay_cycles(1000000);
 
 /*
   // Once sensor has been read and data has been stored in variables, read the Data Bus to see if rover is sending commands
@@ -273,7 +267,7 @@ void loop() {
   message_received = true;                                                                      // $$ FOR DEBUG
   command_id = 1;                                                                               // $$ FOR DEBUG
   
-  // if a command was received, send requested data over the Data Bus
+  // if a command was received, send data over the Data Bus
   if(message_received){
     Send_RS485_DataBus();
   }
@@ -288,10 +282,10 @@ void loop() {
 // FUNCTIONS
 
 /* 
- * Fuction to read a register from the sensor.  
- * first send the address, then read what is being sent back
+ * Fuction to read a registry from the sensor.  
+ * first send the address, then read what is being send back
  * apparently the automatic register incrementation (necessary to read more than one register with a single request) 
- * doesn't work properly. Reads have been limited to one reg at a time. (note from CERN - WdM)
+ * doesn't work properly. Reads have been limited to one reg at a time. (note from CERN)
  */
 unsigned int read_reg(byte sensor, byte reg){
   byte data = 0;
@@ -323,8 +317,8 @@ bool collect_freq(byte sensor, unsigned long int *sens_freq, unsigned long int *
   unsigned int time_start=millis(); // to prevent getting stuck
   int x = 1000;// increase amount of time to wait if serial.prints are used! Otherwise set to 1
   
-// first check to see if no recharge is going on
-//  if((read_reg(sensor,RECHARGE_COUNT) & 0x80) == 0x80){                                           // RCHEV bit = 1 when recharge is in progress         $$ - disabled this temporarily
+  // first check to see if no recharge is going on
+//  if((read_reg(sensor,RECHARGE_COUNT) & 0x80) == 0x80){                                           // RCHEV bit = 1 when recharge is in progress         $$
 //    Serial.println("recharge in progress... BREAK");                                                                                                    $$
 //    return false;                                                                                                                                       $$
 //  }
@@ -359,11 +353,13 @@ bool collect_freq(byte sensor, unsigned long int *sens_freq, unsigned long int *
 }
 
 void fgdos_init(byte sensor){
-  Serial.print("-SENSOR "); Serial.println(abs(sensor-10));   
+  Serial.print("-SENSOR "); Serial.println(abs(sensor-8));   
   // set the reference oscillator and window measurement amount of pulses settings
   // bits (6:4) for ref and (3:2) for window (bit counting from lsb to msb)
   // reference set to 100 (= ??) and windows set to 10 (8192 pulses)(00=32768 ck pulses per window)
-  write_reg(sensor,RECHARGE_WINDOW,0xCD);                                                                          // write_reg(sensor,RECHARGE_WINDOW,0x48);
+  //write_reg(sensor,RECHARGE_WINDOW,0xCD);                                                                          // write_reg(sensor,RECHARGE_WINDOW,0x48);
+  // comment the line above and uncomment the line below to get a WINDOW of 32768 pulses
+  write_reg(sensor,RECHARGE_WINDOW,0xC0);                                                                                                    // $$ Longest WINDOW for low noise
   Serial.print("-window_factor "); Serial.println(WINDOW_FACTOR);
   // manual recharge off and sesitivity to low
   // MSB to switch on or off manual recharge, 3 LSBs to set sensitivity (100 low, 001 high)
@@ -381,15 +377,25 @@ void fgdos_init(byte sensor){
   // or just pick 50 kHz advised from Sealicon
   //unsigned long int target = (((read_reg(sensor,0x05) << 8 | read_reg(sensor,0x04) ) <<8 | read_reg(sensor,0x03) ) & FREQ_MASK );
   //byte reg_target = (target & 0x3FC00) >> 10;
-  byte reg_target = floor(TARGET_FREQ/WINDOW_FACTOR/1024); // dividing by 1023 is bitshifting by 10 ;)             //byte reg_target = round(TARGET_FREQ/WINDOW_FACTOR/1023);
+  //byte reg_target = floor(TARGET_FREQ/WINDOW_FACTOR/1024); // dividing by 1023 is bitshifting by 10 ;)             //byte reg_target = round(TARGET_FREQ/WINDOW_FACTOR/1023);
+  // comment the line above and uncomment the line below to get a WINDOW of 32768 pulses
+  byte reg_target = floor(TARGET_FREQ/WINDOW_FACTOR/8192); // dividing by 8192 is bitshifting by 13                                         // $$ Longest WINDOW for low noise
   write_reg(sensor,TARGET,reg_target);
-  Serial.print("-target ("); Serial.print(TARGET_FREQ); Serial.print(") , "); Serial.println((reg_target << 10)*WINDOW_FACTOR);
+  //Serial.print("-target ("); Serial.print(TARGET_FREQ); Serial.print(") , "); Serial.println((reg_target << 10)*WINDOW_FACTOR);
+  // comment the line above and uncomment the line below to get a WINDOW of 32768 pulses
+  Serial.print("target ("); Serial.print(TARGET_FREQ); Serial.print(") , "); Serial.println(((unsigned long)reg_target*8192)*WINDOW_FACTOR);             // $$ Longest WINDOW for low noise
+  
   //Serial.print("-registry "); Serial.println(reg_target,BIN);
   // set threshold to 30 kHz equivalent (0x1D = 29, when converted to 8 MSBs of sens_freq (18 bit) = 29696)
   // do not forget to apply window factor! (lower alternative: 0x08 = 8192)
-  byte reg_threshold = floor(THRESHOLD_FREQ/WINDOW_FACTOR/1024);                                                   //byte reg_threshold = round(THRESHOLD_FREQ/WINDOW_FACTOR/1023);
+  //byte reg_threshold = floor(THRESHOLD_FREQ/WINDOW_FACTOR/1024);                                                   //byte reg_threshold = round(THRESHOLD_FREQ/WINDOW_FACTOR/1023);
+  // comment the line above and uncomment the line below to get a WINDOW of 32768 pulses
+  byte reg_threshold = floor(THRESHOLD_FREQ/WINDOW_FACTOR/8192);                                                                              // $$ Longest WINDOW for low noise
   write_reg(sensor,THRESHOLD,reg_threshold);
-  Serial.print("-threshold ("); Serial.print(THRESHOLD_FREQ); Serial.print(") , "); Serial.println((reg_threshold << 10)*WINDOW_FACTOR);
+  //Serial.print("-threshold ("); Serial.print(THRESHOLD_FREQ); Serial.print(") , "); Serial.println((reg_threshold << 10)*WINDOW_FACTOR);
+  // comment the line above and uncomment the line below to get a WINDOW of 32768 pulses
+  Serial.print("threshold ("); Serial.print(THRESHOLD_FREQ); Serial.print(") , "); Serial.println(((unsigned long)reg_threshold*8192)*WINDOW_FACTOR);      // $$ Longest WINDOW for low noise
+  
   //Serial.print("-registry "); Serial.println(reg_threshold, BIN);
   // enable interrupt upon new data (for now no interrupt pin is actually being used
   //write_reg(sensor,NIRQ_ENGATE,0x30);                                                                            // 
@@ -404,7 +410,7 @@ void wait(int millisecs){
   while(millis()-t1<millisecs);
 }
 
-void print_freq(byte freq_reg[3],unsigned long int freq_value,char f_type){                                           // This function is just used for debugging now
+void print_freq(byte freq_reg[3],unsigned long int freq_value,char f_type){
   switch (f_type){
     case 'S':
       Serial.print("SENSOR  frequency registers (0x05,0x04,0x03): ");
@@ -423,7 +429,7 @@ void print_freq(byte freq_reg[3],unsigned long int freq_value,char f_type){     
   Serial.print(" | DEC "); Serial.println(freq_value);
 }
 
-void print_meas_full(int temperature, unsigned long int sens_freq, unsigned long int ref_freq, byte sensor){          // This function is just used for debugging now
+void print_meas_full(int temperature, unsigned long int sens_freq, unsigned long int ref_freq, byte sensor){
   Serial.print("SENSOR "); Serial.println(sensor);
   Serial.print("\t temperature (sensor 1445 offset = 87): "); Serial.println(temperature);
   Serial.print("\t sensor and reference frequencies : ");
@@ -463,8 +469,6 @@ void Clock_reset(){
   CS_clockSignalInit(CS_SMCLK, CS_DCOCLK_SELECT, CS_CLOCK_DIVIDER_1);
   
 }
-
-
 
 
 
@@ -519,7 +523,6 @@ void Read_RS485_DataBus(){
     if ((message_buffer[0] == START_BYTE) && (message_buffer[15] == STOP_BYTE)) {
 
       // check if message is addressed to the Payload, 0x00AA used as the Payload address for now                 $$
-      Serial.print("Subsystem ID: ");Serial.println(message_buffer[1] << 8 | message_buffer[2]);             //  $$ FOR DEBUG
       if (( message_buffer[1] << 8 | message_buffer[2] )== RAD_PAYLOAD_ADDR){
         
         // read command type or id and set the command_id variable accordingly
@@ -541,6 +544,7 @@ void Read_RS485_DataBus(){
 
 void Send_RS485_DataBus(){
 
+  Serial.println("I'm here 2!");                                                                               // $$ FOR DEBUG
   
   // construct data buffer to be sent according to the received command
   data_buffer[0] =  START_BYTE;     // Start Byte
@@ -615,7 +619,7 @@ void Send_RS485_DataBus(){
       data_buffer[11] =  (recharge_count_2 >> 8) & 0xFF;
       break;
     default:
-//    data_buffer[2] = 0xFF;                                                                              // $$ Send a particular byte if no legal command is received or if the crc check fails
+//      data_buffer[2] = 0xFF;
       Serial.println("No command selected");                                                              //    $$
       break;
   }
@@ -646,7 +650,7 @@ void Send_RS485_DataBus(){
 }
 
 
-void crc_check_16(){                                                                                   // $$ TBD based on Subsystem Message Protocol
+void crc_check_16(){
 
   Serial.println("This function performs CRC checks");
 

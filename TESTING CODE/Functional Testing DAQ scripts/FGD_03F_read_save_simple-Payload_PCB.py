@@ -18,10 +18,10 @@ def main():
     """
     # create datafile to store into
     date_time = time.strftime("%b_%d_%H-%M-%S", time.localtime())
-    datafile = "E:\SPACEFLIGHT TU DELFT\THESIS\LUNAR ZEBRO\Assembly, Integration and Testing\Payload Functional Testing\Data logging and processing\MSP_CSV\\FGDOS_03F_PAYLOAD_MAIN_FUNC_TEST_NOISE_BACKUP_LAB_POWER_" + date_time + ".csv"
-
+    #datafile = "E:\SPACEFLIGHT TU DELFT\THESIS\LUNAR ZEBRO\Assembly, Integration and Testing\Payload Functional Testing\Data logging and processing\MSP_CSV\\FGDOS_03F_PAYLOAD_MAIN_FUNC_TEST_NOISE_BACKUP_LAB_POWER_" + date_time + ".csv"
+    datafile = "\FGDOS_03F_PAYLOAD_MAIN_BACKUP_NOISE_EXT_OSC_LONG_WINDOW_" + date_time + ".csv"    
     # connect with MSP430 
-    MSP430_port = "COM13"  # serial port of MSP430
+    MSP430_port = "COM6"  # serial port of MSP430
     baud = 9600 # set at same rate as in MSP430 program
     ser = serial.Serial(MSP430_port, baud, timeout=0.1)
     print("Connected to COM port: " + MSP430_port)
