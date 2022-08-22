@@ -30,7 +30,8 @@
  *        - sawtooth profile
  *        - step profile
  *        - TMP100 based feedback control
- *        
+ *       
+ *   Baud rate: 250000
  *  
  */
 
@@ -83,7 +84,7 @@ TI_TMP100 Daughterboard_TMP100;                                                 
 
 //------------------------------------------ Peltier libraries, macros, variables --------------------------------------------------------------
 
-#define PELTIER_PIN A3                                        // peltier input pin: The N-Channel MOSFET Gate is connected to this pin
+#define PELTIER_PIN 6                                 // peltier input pin: The N-Channel MOSFET Gate is connected to this pin
 
 unsigned long int ON_time = 0;                       // for timing open loop control inputs
 unsigned int step_time = 20;                          // amount of time to maintain current temperture / peltier input,  in [s]                       %^ MODIFY
@@ -403,7 +404,7 @@ void set_command_extended(char command, unsigned long int *sens_freq_1, unsigned
       break;     
     case 'a':
       if (!flag_active_1){
-        digitalWrite(PASSIVE,LOW);                                                                            // $$ change wth relay - power + spi
+//        digitalWrite(PASSIVE,LOW);                                                                            // $$ change wth relay - power + spi
         digitalWrite(RELAY_DAUGHTERBOARD_SUPPLY,HIGH);
         digitalWrite(RELAY_FGDOS_SPI,HIGH);
         relay_daughterboard_supply = false;
@@ -411,7 +412,7 @@ void set_command_extended(char command, unsigned long int *sens_freq_1, unsigned
         Serial.println("ACTIVE 1");
         flag_active_1 = true;
       } else {
-        digitalWrite(PASSIVE,HIGH);
+//        digitalWrite(PASSIVE,HIGH);
         digitalWrite(RELAY_DAUGHTERBOARD_SUPPLY,LOW);
         digitalWrite(RELAY_FGDOS_SPI,LOW);
         relay_daughterboard_supply = true;
@@ -420,17 +421,17 @@ void set_command_extended(char command, unsigned long int *sens_freq_1, unsigned
         flag_active_1 = false;
       }
       break;
-    case 'A':
-      if (!flag_active_2){
-        digitalWrite(PASSIVE,LOW);
-        Serial.println("ACTIVE 2");
-        flag_active_2 = true;
-      } else {
-        digitalWrite(PASSIVE,HIGH);
-        Serial.println("PASSIVE 2");
-        flag_active_2 = false;
-      }
-      break;
+//    case 'A':                                                                                                 // Pin 6 used for peltier , PASSIVE mode using Relays across 5V and SPI connections
+//      if (!flag_active_2){
+//        digitalWrite(PASSIVE,LOW);
+//        Serial.println("ACTIVE 2");
+//        flag_active_2 = true;
+//      } else {
+//        digitalWrite(PASSIVE,HIGH);
+//        Serial.println("PASSIVE 2");
+//        flag_active_2 = false;
+//      }
+//      break;
     case 'r':
       if (flag_recharge_1){
         recharge_enable(SS1);

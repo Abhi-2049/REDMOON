@@ -13,7 +13,7 @@
  *        MSP430 driver lib library User Guide - https://dev.ti.com/tirex/explore/node?node=AANMz9MCP3TctaSCJuEa0Q__IOGqZri__LATEST 
  *        
  *        
- * 
+ * Baud rate: 9600
 */
 
 //------------------------------------- LIBRARIES & MACROS -------------------------------------------------
@@ -42,8 +42,8 @@ unsigned long int threshold_freq = 0;
 int temperature_1 = 0;
 int temperature_2 = 0;
 
-int recharge_count_1 = 0;
-int recharge_count_2 = 0;
+byte recharge_count_1 = 0;
+byte recharge_count_2 = 0;
 
 
 char command;
@@ -121,13 +121,11 @@ void setup() {
     attachInterrupt(digitalPinToInterrupt(NIRQ_1), collect_data_SS1, LOW);                                                    // $$ change this to extended
     attachInterrupt(digitalPinToInterrupt(NIRQ_2), collect_data_SS2, LOW);                                                    // $$ change this to extended
   }
-
+*/
   // Read all registers of the sensors so they can be double checked later if needed
   read_all_registers(SS1);
   read_all_registers(SS2);
- * 
- * 
- */
+
 
 
                                                                                                  
@@ -140,11 +138,12 @@ void loop() {
   //update Payload ON Time
   payload_on_time = millis();
 
+/*
   // Set SMCLK to WCK = 31250 Hz
-  Clock_set_readout();
+  Clock_set_readout();                                                          // $$ comment to disable the WCK 
 
   __delay_cycles(1000000);                                                                 // to let the SMCLK settle
-
+//*/
 
   
   // Sensor 1
@@ -168,11 +167,12 @@ void loop() {
   // collect freq from sensor 2 
   collect_freq(SS2,&sens_freq_2,&ref_freq_2, WINDOW_FACTOR);
 
-
+/*
    // reset SMCLK to 8 MHz
-   Clock_reset();
+   Clock_reset();                                                                              // $$ comment to disable the WCK 
    //delay(10);
    __delay_cycles(100000);
+//*/
 
 
   //Print Sensor 1 & 2 measurments to Serial Monitor
@@ -183,6 +183,16 @@ void loop() {
 
    
    __delay_cycles(1000000);                                                       // to let the SMCLK settle
+
+  // ------------------------------- COMMAND - RECEIVE & EXECUTE ----------------------------------------------------------- 
+  
+  // Option to change sensor settings
+  command = get_command();
+  set_command(command, &sens_freq_1, &sens_freq_2, &target_freq, &threshold_freq, &ref_freq_1, &ref_freq_2,                        //  $$ function call modified to extended version
+      &temperature_1, &temperature_2, &recharge_count_1, &recharge_count_2, flag_isr);
+
+  
+
   
 }
 

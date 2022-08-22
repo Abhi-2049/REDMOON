@@ -122,11 +122,11 @@ void collect_data(byte sensor,int *temperature, byte*recharge_count, unsigned lo
     Serial.println("reset recharge counter");
     write_reg(sensor,x1_RECHARGE_COUNT,0x00);
   }
-  print_meas_short(*temperature,*sens_freq,*ref_freq,*recharge_count,sensor-6);
+  print_meas_short(*temperature,*sens_freq,*ref_freq,*recharge_count,sensor-10);
 }
 
 void fgdos_init(byte sensor){
-  Serial.print("SENSOR "); Serial.println(sensor-6);
+  Serial.print("SENSOR "); Serial.println(sensor-10);
   write_reg(sensor,xB_RECHARGE_WINDOW,xB_settings_a); 
   Serial.print("window_factor "); Serial.println(WINDOW_FACTOR);
   write_reg(sensor,xC_CHARGE_SENS,xC_settings);
@@ -173,7 +173,7 @@ void fgdos_init_variable(byte sensor,String sens,String state){
   } else if (state == "passive"){
     xb_settings = xB_settings_p;
   }
-  Serial.print("SENSOR "); Serial.println(sensor-6);
+  Serial.print("SENSOR "); Serial.println(sensor-10);
   write_reg(sensor,xB_RECHARGE_WINDOW,xb_settings); 
   Serial.print("AUTO RECHARGE "); Serial.println(state);
   Serial.print("window_factor "); Serial.println(WINDOW_FACTOR);
@@ -257,7 +257,7 @@ void print_freq(byte freq_reg[3],unsigned long int freq_value,char f_type){
 }
 
 void print_meas_full(int temperature, unsigned long int sens_freq, unsigned long int ref_freq, byte sensor){
-  Serial.print("SENSOR "); Serial.println(sensor);
+  Serial.print("SENSOR "); Serial.println(sensor-10);
   Serial.print("\t temperature (sensor offset = ?): "); Serial.println(temperature);
   Serial.print("\t sensor and reference frequencies : ");
   Serial.print(sens_freq); Serial.print(" | ");
@@ -463,16 +463,16 @@ void set_command(char command, unsigned long int *sens_freq_1, unsigned long int
     default:
       break;
   }
-  if (flag_isr){                                                                                      // $$ check if this is needed
-    if (flag_on_1){
-      pinMode(NIRQ_1, INPUT_PULLUP);
-      attachInterrupt(digitalPinToInterrupt(NIRQ_1), collect_data_SS1, LOW);
-    }
-    if (flag_on_2){                                                                                   // $$ check if this is needed
-      pinMode(NIRQ_2, INPUT_PULLUP);
-      attachInterrupt(digitalPinToInterrupt(NIRQ_2), collect_data_SS2, LOW);
-    }
-  }
+//  if (flag_isr){                                                                                      // $$ check if this is needed
+//    if (flag_on_1){
+//      pinMode(NIRQ_1, INPUT_PULLUP);
+//      attachInterrupt(digitalPinToInterrupt(NIRQ_1), collect_data_SS1, LOW);
+//    }
+//    if (flag_on_2){                                                                                   // $$ check if this is needed
+//      pinMode(NIRQ_2, INPUT_PULLUP);
+//      attachInterrupt(digitalPinToInterrupt(NIRQ_2), collect_data_SS2, LOW);
+//    }
+//  }
 }
 
 

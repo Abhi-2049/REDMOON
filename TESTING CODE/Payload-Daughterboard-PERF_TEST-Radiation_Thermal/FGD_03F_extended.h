@@ -25,7 +25,7 @@
   #define SS1 7 
   #define SS2 8
   #define PWM_PIN 9
-  #define PASSIVE 6
+  //#define PASSIVE 6                                                                                 // Pin 6 used for Peltier control
   #define NSTBY_1 4
   #define NSTBY_2 5
   #define NIRQ_1 2

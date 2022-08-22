@@ -10,8 +10,8 @@ bool flag_print = true;
 void standby_passive_pins_setup(){
     // pins to control switch (eg MOSFET) for sensor x power connection and pins to put sensors in standby
   // names: standby <-> on | active <-> passive
-  pinMode(PASSIVE,OUTPUT);
-  digitalWrite(PASSIVE,LOW);
+//  pinMode(PASSIVE,OUTPUT);                                                                                                        // Pin 6 used for peltier , PASSIVE mode using Relays across 5V and SPI connections                                                                             
+//  digitalWrite(PASSIVE,LOW);
   pinMode(NSTBY_1,OUTPUT);
   digitalWrite(NSTBY_1,HIGH);
   pinMode(NSTBY_2,OUTPUT);
@@ -394,28 +394,28 @@ void set_command(char command, unsigned long int *sens_freq_1, unsigned long int
           flag_on_2 = false;
         }
       break;     
-    case 'a':
-      if (!flag_active_1){
-        digitalWrite(PASSIVE,LOW);
-        Serial.println("ACTIVE 1");
-        flag_active_1 = true;
-      } else {
-        digitalWrite(PASSIVE,HIGH);
-        Serial.println("PASSIVE 1");
-        flag_active_1 = false;
-      }
-      break;
-    case 'A':
-      if (!flag_active_2){
-        digitalWrite(PASSIVE,LOW);
-        Serial.println("ACTIVE 2");
-        flag_active_2 = true;
-      } else {
-        digitalWrite(PASSIVE,HIGH);
-        Serial.println("PASSIVE 2");
-        flag_active_2 = false;
-      }
-      break;
+//    case 'a':                                                                                       // Pin 6 used for peltier , PASSIVE mode using Relays across 5V and SPI connections
+//      if (!flag_active_1){
+//        digitalWrite(PASSIVE,LOW);
+//        Serial.println("ACTIVE 1");
+//        flag_active_1 = true;
+//      } else {
+//        digitalWrite(PASSIVE,HIGH);
+//        Serial.println("PASSIVE 1");
+//        flag_active_1 = false;
+//      }
+//      break;
+//    case 'A':
+//      if (!flag_active_2){
+//        digitalWrite(PASSIVE,LOW);
+//        Serial.println("ACTIVE 2");
+//        flag_active_2 = true;
+//      } else {
+//        digitalWrite(PASSIVE,HIGH);
+//        Serial.println("PASSIVE 2");
+//        flag_active_2 = false;
+//      }
+//      break;
     case 'r':
       if (flag_recharge_1){
         recharge_enable(SS1);

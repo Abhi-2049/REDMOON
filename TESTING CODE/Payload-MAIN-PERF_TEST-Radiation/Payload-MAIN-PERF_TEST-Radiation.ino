@@ -12,6 +12,7 @@
  * - serial commands for relay ops
  * - print ina219 readings and relay states over serial
  * 
+ * Baud rate: 9600
  */
 
 
@@ -100,7 +101,8 @@ void set_command(char command);
 /**************************************************************************/
 void setup(void)
 {
-
+  Serial.begin(9600);
+  
 ////////////////////////// RELAY SETUP ////////////////////////////////////////
 
   // setting relay control pins to O/P mode
@@ -150,7 +152,7 @@ void setup(void)
 
 /////////////////////////// OSC SETUP ///////////////////////////////////////
   
-  Serial.begin(9600);
+  
   Serial.println("Si5351 Clockgen Setup"); Serial.println("");
 
   /* Initialise the sensor */

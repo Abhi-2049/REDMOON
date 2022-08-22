@@ -19,11 +19,11 @@
 //--------------------------------------  MACROS  -------------------------------------------------------------------------------
   
   // CHOOSE SENSITIVITY & ISR & WINDOW
-  #define HIGHSENS
+  #define HIGHSENS                                                                                    // $$ Change based on HISENS/LOWSENS
   // #define LOWSENS
-  #define FGD_ISR true
+  #define FGD_ISR true                                                                                // $$ Change to disable ISR for NIRQ on FGDOS
   //#define FGD_ISR false
-  #define WINDOW_PULSES 4096
+  #define WINDOW_PULSES 4096                                                                          // $$ Change based on WINDOW setting and implement in FGDOS init
   //#define WINDOW_PULSES 8192
   //#define WINDOW_PULSES 16384
   // #define WINDOW_PULSES 32768
@@ -62,7 +62,8 @@
   #define xE_NIRQ_ENGATE 0x0E
 
   // sensor constant definitions (these depend on settings in Arduino and sensor!)
-  #define CK_FREQ 31250.0f // depends on the settings of the PWM                                                                    // $$ Change based on WCK source
+  #define CK_FREQ 32768.0f // depends on the settings of the PWM                                                             // 31250/32768 $$ Change based on WCK source
+//  #define CK_FREQ 31250.0f
   #define WINDOW_FACTOR (CK_FREQ/WINDOW_PULSES) // one should be defined as float, otherwise rounding errors
 
   // register overall valid settings
@@ -75,7 +76,7 @@
   // TDIV (bit 0) to 1 for more precise frequency range, ONLY FOR LOWEST 2 AMOUNTS OF PULSES USED 
   // bitshift is used for threshold and target register comparison, depends on TDIV (if 1, then 10 shifts, if 0 then 13)
   // Cx default, 4x to disable auto recharge (called active and passive but is confusing, I know...)
-  #if WINDOW_PULSES == 4096                                                                                                     // $$ Change based on WINDOW setting and implement in FGDOS init
+  #if WINDOW_PULSES == 4096                                                                                                     
     // TDIV to 1
     #define xB_settings_a 0xCD
     #define xB_settings_p 0x4D
