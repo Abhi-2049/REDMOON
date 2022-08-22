@@ -36,7 +36,7 @@ Adafruit_MCP9600 mcp;
 
 
 
-#define PELTIER_PIN A3                                // peltier input pin: The N-Channel MOSFET Gate is connected to this pin
+#define PELTIER_PIN 6                                // peltier input pin: The N-Channel MOSFET Gate is connected to this pin
 
 
 //----------------------------------- VARIABLES -----------------------------------------------------
@@ -55,7 +55,7 @@ int temp_error_prev = 0;
 
 
 int peltier_low_temp = 30;                            // temperature lower limit                                                                               %^ MODIFY
-int peltier_high_temp = 60;                           // temperature upper limit                                                                               %^ MODIFY
+int peltier_high_temp = 50;                           // temperature upper limit                                                                               %^ MODIFY
 int peltier_const_temp = 35;                          // constant temperature to be maintained                                                                 %^ MODIFY
 int peltier_step_temp = 5;                           // temperature step height to be achieved,        range: [0,10]                                          %^  MODIFY
 int target_temp = 0;                                 // the initial target to be achieved by the stepped profile
