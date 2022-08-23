@@ -1,0 +1,31 @@
+This changelog starts at version 1.6
+
+v1.14 05 October 2020
+
+- LUT interpolation for temperatures below 10º corrected.
+- LUT quality indication. 100 means best fit. > 90 is acceptable
+
+v1.13 - Not released
+v1.12 - Not released
+v1.11 - Not released
+
+v1.10 24 August 2020
+
+- Check for LUT overflow
+- Any change at the Window register automatically disables recharge as a safety function.
+- CHIPID coded in the log files (MSBs at 0x0F) 
+- Autotarget rounds for the minumum Sensor-Reference difference.
+
+v1.9 - Not released
+
+v1.8 31 Jan 2020
+
+- Disable Factory intended menus
+- Gate time control changed to spin control to avoid inconsistent data
+- File logging of compensated datapoints into additional file
+
+v1.6 28 Nov 2019
+
+- When plotting data with compensation file loaded, the calculated RAD values are now positive values. (in previous versions, RAD values were negative)
+- Plotting of an average value from both sensors in package added. This view can be enabled on Sensor1 plot
+- Screen refresh after loading a compensation file fixed.

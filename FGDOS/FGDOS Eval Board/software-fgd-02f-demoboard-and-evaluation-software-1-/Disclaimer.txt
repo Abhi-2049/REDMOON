@@ -1,0 +1,35 @@
+General Conditions of Use for Demo Boards and Test Software
+
+1.	Preamble
+Sealicon develops and manufactures integrated Circuits (iCs) which are in part flexible in their functions and parameters, i.e. they can be set and programmed as required. With an increased technical complexity demo boards and the relevant software are also provided during the development phase to support design-ins for systems applications. On request customized adaptations can be provided to optimize the possible individual and application-specific uses of the iCs.
+
+The software is supplied as what is known as a BETA version, i.e. Sealicon has implemented all of the main functions of the program but has not yet necessarily tested it in its entirety.
+
+2.	Users
+Users of demo boards and software are usually tradespersons who intend to purchase iCs from Sealicon.
+
+3.	Granting of user rights
+The user may implement the software free of charge as often and in as many copies as they wish, integrate it into their own products, sell it to third parties – also in modified form – taking into account any copyrights or circulate it free of charge. The use of the software is granted for an unlimited period. The granted rights of use are not exclusive.
+
+4.	Restrictions of use
+The software may only be used in a manner and for purposes which do not violate the laws of Spain or the rights of third parties. No plug-ins or other amendments supplied by third parties are covered by the grant of this right.
+
+The software may not be used in a high-risk environment where a defect could  cause direct death or injury to humans or result in serious damage to property or the environment, such as power generation plants, air transport or emergency systems. The software has not been designed to meet the safety requirements of such environments.
+
+5. 	Duties and obligations as user
+Prior to installation the user must ensure that their system has all the hardware and software necessary for proper operation. System requirements are included in the information given in the relevant documentation; data must be saved prior to installation of the software and afterwards at regular intervals. Users shall undertake to inform Sealicon without delay should any defects occur in the software, or should any claims be laid against them in conjunction with the software.
+
+6.	Information for installation
+Users should glean any information necessary for installation from the relevant documentation.
+
+7.	Warranty
+During test runs Sealicon verifies that in essence the functions correspond to the relevant documentation.
+
+Despite the greatest endeavor software is never completely free of error. Sealicon reserves the right to rectify at any time any defects in or make any changes to the software through error correction or by releasing updates or new versions, which shall be made available on their website without prior notification.
+
+Only those defects shall be covered by warranty which greatly restrict the suitability of the software for use, in as far as Sealicon has maliciously concealed these defects or undertaken to provide a warranty expressly for the relevant condition. Sealicon does not warrantee the conditions of the software by providing performance data or any other instructions.
+
+In as far as the software has been supplied by Sealicon free of charge, any warranty claims are inadmissible from the outset.
+
+8.	Separability clause
+Should any individual items of this contract be found by a court or any other competent agency to be ineffective, null and void or not enforceable in whole or in part according to the law in force, the rest of the contract shall remain unaffected and the residual terms of the contract shall remain valid. The same applies to any loopholes in the contract. Any ineffective term shall be replaced by a provision which in an economic sense corresponds to the invalid term as closely as possible. The same applies to any loopholes.
