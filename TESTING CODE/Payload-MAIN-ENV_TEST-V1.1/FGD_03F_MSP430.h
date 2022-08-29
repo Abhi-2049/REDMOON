@@ -20,7 +20,7 @@
   
   // CHOOSE SENSITIVITY & ISR & WINDOW
   #define HIGHSENS                                                                                    // $$ Change based on HISENS/LOWSENS
-  // #define LOWSENS
+//   #define LOWSENS
   #define FGD_ISR true                                                                                // $$ Change to disable ISR for NIRQ on FGDOS
   //#define FGD_ISR false
   #define WINDOW_PULSES 4096                                                                          // $$ Change based on WINDOW setting and implement in FGDOS init
@@ -62,8 +62,8 @@
   #define xE_NIRQ_ENGATE 0x0E
 
   // sensor constant definitions (these depend on settings in Arduino and sensor!)
-  #define CK_FREQ 32768.0f // depends on the settings of the PWM                                                             // 31250/32768 $$ Change based on WCK source
-//  #define CK_FREQ 31250.0f
+//  #define CK_FREQ 32768.0f // depends on the settings of the PWM                                                             // 31250/32768 $$ Change based on WCK source
+  #define CK_FREQ 31250.0f
   #define WINDOW_FACTOR (CK_FREQ/WINDOW_PULSES) // one should be defined as float, otherwise rounding errors
 
   // register overall valid settings
@@ -109,12 +109,12 @@
     // disconnect recharging system before setting targets, set pump level (for shortest recharge time bit 3:0 to 111)
     // the recharge voltage of 100 (16.5 V, ...4) seems to be good, otherwise to fast and overshoots in recharging
     // set reference close to target, according to sensitivity  (bit 3 to 1 for lower values)
-    #define xD_settings_off 0x04
+    #define xD_settings_off 0x00      // 0x04
     // allow recharges again
-    #define xD_settings_on 0x44
+    #define xD_settings_on 0x40    // 0x44
     // for enabling manual recharges
     #define xC_settings_manual 0xF9
-    #define xD_settings_manual 0x64
+    #define xD_settings_manual 0x60   // 0x64
   #endif
 
   #ifdef LOWSENS
@@ -128,12 +128,12 @@
     // disconnect recharging system before setting targets, set pump level (for shortest recharge time bit 3:0 to 111)
     // the recharge voltage of 100 (16.5V) seems to be good, otherwise to fast and overshoots in recharging
     // set reference close to target, according to sensitivity  (bit 3 to 1 for lower values)
-    #define xD_settings_off 0x04
+    #define xD_settings_off 0x00  //
     // allow recharges again
-    #define xD_settings_on 0x44
+    #define xD_settings_on 0x40  //
     // for enabling manual recharges
     #define xC_settings_manual 0xFC
-    #define xD_settings_manual 0x64
+    #define xD_settings_manual 0x60  //
   #endif
 
   //-------------------------------------- FUNCTIONS DECLARATIONS -------------------------------------------------------------------------------

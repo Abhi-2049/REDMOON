@@ -87,7 +87,7 @@ TI_TMP100 Daughterboard_TMP100;                                                 
 #define PELTIER_PIN 6                                 // peltier input pin: The N-Channel MOSFET Gate is connected to this pin
 
 unsigned long int ON_time = 0;                       // for timing open loop control inputs
-unsigned int step_time = 20;                          // amount of time to maintain current temperture / peltier input,  in [s]                       %^ MODIFY
+unsigned int step_time = 10;                          // amount of time to maintain current temperture / peltier input,  in [s]                       %^ MODIFY
 unsigned int start_time = 0; 
 unsigned int current_time = 0;
 
@@ -100,9 +100,9 @@ int temp_error_prev = 0;
 
 
 int peltier_low_temp = 30;                            // temperature lower limit                                                                      %^ MODIFY
-int peltier_high_temp = 60;                           // temperature upper limit                                                                      %^ MODIFY
+int peltier_high_temp = 50;                           // temperature upper limit                                                                      %^ MODIFY
 int peltier_const_temp = 35;                          // constant temperature to be maintained                                                        %^ MODIFY
-int peltier_step_temp = 5;                           // temperature step height to be achieved,        range: [0,10]                                  %^ MODIFY
+int peltier_step_temp = 10;                           // temperature step height to be achieved,        range: [0,10]                                  %^ MODIFY
 int target_temp = 0;                                 // the initial target to be achieved by the stepped profile
 int peltier_linear_input = 40;                        // for passing heating input in linear profile,   range: [0,99]                                 %^ MODIFY
 

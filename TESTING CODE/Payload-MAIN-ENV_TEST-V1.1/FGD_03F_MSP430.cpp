@@ -146,7 +146,7 @@ void fgdos_init(byte sensor){
   byte reg_threshold = floor(THRESHOLD_FREQ/WINDOW_FACTOR/BITSHIFT);
   write_reg(sensor,xA_THRESHOLD,reg_threshold);
   Serial.print("threshold ("); Serial.print(THRESHOLD_FREQ); Serial.print(") , "); Serial.println(((unsigned long)reg_threshold*BITSHIFT)*WINDOW_FACTOR);
-  write_reg(sensor,xD_RECHARGE_REF,xD_settings_on);
+//  write_reg(sensor,xD_RECHARGE_REF,xD_settings_on);                                                                       // %% Enable / disable automatic recharge
   Serial.println();
   // wait for registers to update ( 2 measurement windows +10% recommended by Sealicon )
   __delay_cycles(2.1/WINDOW_FACTOR*1000);
@@ -188,7 +188,7 @@ void fgdos_init_variable(byte sensor,String sens,String state){
   byte reg_threshold = floor(threshold_freq/WINDOW_FACTOR/1024);
   write_reg(sensor,xA_THRESHOLD,reg_threshold);
   Serial.print("threshold ("); Serial.print(threshold_freq); Serial.print(") , "); Serial.println((reg_threshold << 10)*WINDOW_FACTOR);
-  write_reg(sensor,xD_RECHARGE_REF,xd_settings_on);
+//  write_reg(sensor,xD_RECHARGE_REF,xd_settings_on);                             // %% automatic recharge disabled 
   Serial.println();
   // wait for registers to update
   __delay_cycles(2.1/WINDOW_FACTOR*1000);

@@ -138,7 +138,7 @@ void loop() {
   //update Payload ON Time
   payload_on_time = millis();
 
-/*
+///*
   // Set SMCLK to WCK = 31250 Hz
   Clock_set_readout();                                                          // $$ comment to disable the WCK 
 
@@ -167,7 +167,7 @@ void loop() {
   // collect freq from sensor 2 
   collect_freq(SS2,&sens_freq_2,&ref_freq_2, WINDOW_FACTOR);
 
-/*
+///*
    // reset SMCLK to 8 MHz
    Clock_reset();                                                                              // $$ comment to disable the WCK 
    //delay(10);
