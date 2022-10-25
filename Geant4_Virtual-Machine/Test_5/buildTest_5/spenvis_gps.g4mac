@@ -1,0 +1,133 @@
+
+#
+#Source definition
+#
+# =============================
+# SPENVIS particle source
+# Project: TEST_1
+# title:  
+# Particle: GCR ion
+# Mission Avg Spectrum: duration=   125.0 Days
+# =============================
+
+# The 4 lines below initialize the run and need to be added to the SPENVIS Macro explicitly
+# Initialize kernel
+/run/initialize
+#
+/control/verbose 2
+/run/verbose 2
+
+/gps/particle  proton
+/gps/ene/type Arb
+/gps/hist/type arb
+/gps/hist/point   1.000000E+00   8.881408E-08
+/gps/hist/point   1.100000E+00   1.089278E-07
+/gps/hist/point   1.200000E+00   1.311552E-07
+/gps/hist/point   1.400000E+00   1.819862E-07
+/gps/hist/point   1.600000E+00   2.412743E-07
+/gps/hist/point   1.800000E+00   3.089945E-07
+/gps/hist/point   2.000000E+00   3.850713E-07
+/gps/hist/point   2.200000E+00   4.694419E-07
+/gps/hist/point   2.500000E+00   6.113916E-07
+/gps/hist/point   2.800000E+00   7.715500E-07
+/gps/hist/point   3.200000E+00   3.857499E-07
+/gps/hist/point   3.500000E+00   4.643148E-07
+/gps/hist/point   4.000000E+00   6.109895E-07
+/gps/hist/point   4.500000E+00   7.770164E-07
+/gps/hist/point   5.000000E+00   9.619808E-07
+/gps/hist/point   5.500000E+00   1.165506E-06
+/gps/hist/point   6.300000E+00   1.528699E-06
+/gps/hist/point   7.100000E+00   1.936729E-06
+/gps/hist/point   8.000000E+00   2.447301E-06
+/gps/hist/point   9.000000E+00   3.075996E-06
+/gps/hist/point   1.000000E+01   3.766644E-06
+/gps/hist/point   1.100000E+01   4.516479E-06
+/gps/hist/point   1.200000E+01   5.322863E-06
+/gps/hist/point   1.400000E+01   7.095601E-06
+/gps/hist/point   1.600000E+01   9.066385E-06
+/gps/hist/point   1.800000E+01   1.121913E-05
+/gps/hist/point   2.000000E+01   1.353901E-05
+/gps/hist/point   2.200000E+01   1.601207E-05
+/gps/hist/point   2.500000E+01   1.998179E-05
+/gps/hist/point   2.800000E+01   2.423425E-05
+/gps/hist/point   3.200000E+01   3.028495E-05
+/gps/hist/point   3.500000E+01   3.507274E-05
+/gps/hist/point   4.000000E+01   4.345702E-05
+/gps/hist/point   4.500000E+01   5.226479E-05
+/gps/hist/point   5.000000E+01   6.141562E-05
+/gps/hist/point   5.500000E+01   7.084040E-05
+/gps/hist/point   6.300000E+01   9.237539E-05
+/gps/hist/point   7.100000E+01   1.092244E-04
+/gps/hist/point   8.000000E+01   1.284157E-04
+/gps/hist/point   9.000000E+01   1.498163E-04
+/gps/hist/point   1.000000E+02   1.711288E-04
+/gps/hist/point   1.100000E+02   1.922152E-04
+/gps/hist/point   1.200000E+02   2.129748E-04
+/gps/hist/point   1.400000E+02   2.532124E-04
+/gps/hist/point   1.600000E+02   2.914267E-04
+/gps/hist/point   1.800000E+02   3.274168E-04
+/gps/hist/point   2.000000E+02   3.610947E-04
+/gps/hist/point   2.200000E+02   3.924603E-04
+/gps/hist/point   2.500000E+02   4.352739E-04
+/gps/hist/point   2.800000E+02   4.732244E-04
+/gps/hist/point   3.200000E+02   5.168799E-04
+/gps/hist/point   3.500000E+02   5.448652E-04
+/gps/hist/point   4.000000E+02   5.834817E-04
+/gps/hist/point   4.500000E+02   6.134148E-04
+/gps/hist/point   5.000000E+02   6.359966E-04
+/gps/hist/point   5.500000E+02   6.523957E-04
+/gps/hist/point   6.300000E+02   6.682544E-04
+/gps/hist/point   7.100000E+02   6.741606E-04
+/gps/hist/point   8.000000E+02   6.720495E-04
+/gps/hist/point   9.000000E+02   6.619461E-04
+/gps/hist/point   1.000000E+03   6.462884E-04
+/gps/hist/point   1.100000E+03   6.270116E-04
+/gps/hist/point   1.200000E+03   6.055106E-04
+/gps/hist/point   1.400000E+03   5.594548E-04
+/gps/hist/point   1.600000E+03   5.130472E-04
+/gps/hist/point   1.800000E+03   4.687130E-04
+/gps/hist/point   2.000000E+03   4.275331E-04
+/gps/hist/point   2.200000E+03   3.898968E-04
+/gps/hist/point   2.500000E+03   3.400208E-04
+/gps/hist/point   2.800000E+03   2.974209E-04
+/gps/hist/point   3.200000E+03   2.503221E-04
+/gps/hist/point   3.500000E+03   2.210550E-04
+/gps/hist/point   4.000000E+03   1.813956E-04
+/gps/hist/point   4.500000E+03   1.505577E-04
+/gps/hist/point   5.000000E+03   1.263046E-04
+/gps/hist/point   5.500000E+03   1.069938E-04
+/gps/hist/point   6.300000E+03   8.355254E-05
+/gps/hist/point   7.100000E+03   6.654019E-05
+/gps/hist/point   8.000000E+03   5.255005E-05
+/gps/hist/point   9.000000E+03   4.129812E-05
+/gps/hist/point   1.000000E+04   3.308348E-05
+/gps/hist/point   1.100000E+04   2.693978E-05
+/gps/hist/point   1.200000E+04   2.225002E-05
+/gps/hist/point   1.400000E+04   1.572807E-05
+/gps/hist/point   1.600000E+04   1.155742E-05
+/gps/hist/point   1.800000E+04   8.760142E-06
+/gps/hist/point   2.000000E+04   6.810596E-06
+/gps/hist/point   3.000000E+04   2.511515E-06
+/gps/hist/point   4.000000E+04   1.210229E-06
+/gps/hist/point   5.000000E+04   6.803182E-07
+/gps/hist/point   6.000000E+04   4.227704E-07
+/gps/hist/point   7.000000E+04   2.819014E-07
+/gps/hist/point   8.000000E+04   1.980711E-07
+/gps/hist/point   9.000000E+04   1.448902E-07
+/gps/hist/point   1.000000E+05   1.094355E-07
+/gps/hist/inter  Lin
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+/gps/source/list 
+
+#
+#Normalisation
+#
+/control/alias  NORM_FACTOR_SPECTRUM "   2.546685E+07 "
+/control/alias  NORM_FACTOR_ANGULAR "   2.500000E-01 "
+
+
+
+# Have to actually initiate the 
+/run/beamOn 100000
