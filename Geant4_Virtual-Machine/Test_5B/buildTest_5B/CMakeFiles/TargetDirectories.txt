@@ -1,0 +1,8 @@
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/install/local.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/install/strip.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/B1.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/install.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/exampleB1.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/rebuild_cache.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/edit_cache.dir
+/home/local1/geant4/work/Test_5B/buildTest_5B/CMakeFiles/list_install_components.dir

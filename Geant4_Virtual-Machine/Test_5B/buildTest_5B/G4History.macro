@@ -1,0 +1,209 @@
+/run/verbose 2
+/run/initialize
+/control/execute vis.mac
+/vis/open OGL 600x600-0+0
+/vis/sceneHandler/create OGL
+/vis/viewer/create ! ! 600x600-0+0
+/vis/viewer/refresh
+/vis/viewer/set/autoRefresh false
+/vis/verbose errors
+/vis/drawVolume
+/vis/scene/create
+/vis/scene/add/volume world -1 -1 none m 0 0 0 0 0 0
+/vis/sceneHandler/attach
+/vis/viewer/set/viewpointVector -1 0 0
+/vis/viewer/set/lightsVector -1 0 0
+/vis/viewer/set/style wireframe
+/vis/viewer/set/auxiliaryEdge true
+/vis/viewer/set/lineSegmentsPerCircle 100
+/vis/scene/add/trajectories smooth
+/tracking/storeTrajectory 2
+/vis/scene/notifyHandlers
+/vis/modeling/trajectories/create/drawByCharge
+/vis/modeling/trajectories/drawByCharge-0/default/setDrawStepPts true
+/vis/scene/notifyHandlers scene-0
+/vis/modeling/trajectories/drawByCharge-0/default/setStepPtsSize 2
+/vis/scene/notifyHandlers scene-0
+/vis/scene/endOfEventAction accumulate
+/vis/set/textColour green
+/vis/set/textLayout right
+/vis/scene/add/text2D 0.9 -.9 24 ! ! exampleB1
+/vis/scene/notifyHandlers
+/vis/set/textLayout
+/vis/set/textColour
+/vis/scene/add/scale
+/vis/scene/notifyHandlers
+/vis/scene/add/axes
+/vis/scene/notifyHandlers
+/vis/scene/add/eventID
+/vis/scene/notifyHandlers
+/vis/scene/add/date
+/vis/scene/notifyHandlers
+/vis/scene/add/logo2D
+/vis/scene/notifyHandlers
+/vis/scene/add/logo
+/vis/scene/notifyHandlers
+/vis/set/colour red
+/vis/set/lineWidth 2
+/vis/scene/add/frame
+/vis/scene/notifyHandlers
+/vis/set/colour
+/vis/set/lineWidth
+/vis/scene/add/text 0 6 -4 cm 18 4 4 Shape1
+/vis/scene/notifyHandlers
+/vis/scene/add/text 6 7 10 cm 18 4 4 Shape2
+/vis/scene/notifyHandlers
+/vis/geometry/set/visibility World 0 false
+/vis/scene/notifyHandlers
+/vis/geometry/set/colour Envelope 0 0 0 1 .3
+/vis/scene/notifyHandlers
+/vis/viewer/set/style surface
+/vis/viewer/set/hiddenMarker true
+/vis/viewer/set/viewpointThetaPhi 120 150
+/vis/viewer/set/autoRefresh true
+/vis/viewer/refresh
+/vis/verbose warnings
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/viewer/set/picking false
+/vis/viewer/refresh
+/vis/viewer/set/style w
+/vis/viewer/refresh
+/vis/viewer/set/hiddenEdge 0
+/vis/viewer/refresh
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/set/touchable World 0 Envelope 0 Shape1 0
+/vis/set/touchable World 0 Envelope 0 Shape7 0
+/gps/particle  proton
+/gps/ene/type Arb
+/gps/hist/type arb
+/gps/hist/point   1.000000E+00   5.066761E-08
+/gps/hist/point   1.100000E+00   6.217840E-08
+/gps/hist/point   1.200000E+00   7.491190E-08
+/gps/hist/point   1.400000E+00   1.040470E-07
+/gps/hist/point   1.600000E+00   1.380793E-07
+/gps/hist/point   1.800000E+00   1.769848E-07
+/gps/hist/point   2.000000E+00   2.207409E-07
+/gps/hist/point   2.200000E+00   2.693224E-07
+/gps/hist/point   2.500000E+00   3.511421E-07
+/gps/hist/point   2.800000E+00   4.435677E-07
+/gps/hist/point   3.200000E+00   2.212812E-07
+/gps/hist/point   3.500000E+00   2.665578E-07
+/gps/hist/point   4.000000E+00   3.511798E-07
+/gps/hist/point   4.500000E+00   4.470863E-07
+/gps/hist/point   5.000000E+00   5.540890E-07
+/gps/hist/point   5.500000E+00   6.719490E-07
+/gps/hist/point   6.300000E+00   8.826116E-07
+/gps/hist/point   7.100000E+00   1.119664E-06
+/gps/hist/point   8.000000E+00   1.416858E-06
+/gps/hist/point   9.000000E+00   1.783294E-06
+/gps/hist/point   1.000000E+01   2.186674E-06
+/gps/hist/point   1.100000E+01   2.625240E-06
+/gps/hist/point   1.200000E+01   3.097610E-06
+/gps/hist/point   1.400000E+01   4.138231E-06
+/gps/hist/point   1.600000E+01   5.297982E-06
+/gps/hist/point   1.800000E+01   6.567813E-06
+/gps/hist/point   2.000000E+01   7.938930E-06
+/gps/hist/point   2.200000E+01   9.403792E-06
+/gps/hist/point   2.500000E+01   1.176124E-05
+/gps/hist/point   2.800000E+01   1.429173E-05
+/gps/hist/point   3.200000E+01   1.790331E-05
+/gps/hist/point   3.500000E+01   2.076844E-05
+/gps/hist/point   4.000000E+01   2.580001E-05
+/gps/hist/point   4.500000E+01   3.110177E-05
+/gps/hist/point   5.000000E+01   3.662469E-05
+/gps/hist/point   5.500000E+01   4.232856E-05
+/gps/hist/point   6.300000E+01   5.539507E-05
+/gps/hist/point   7.100000E+01   6.567059E-05
+/gps/hist/point   8.000000E+01   7.741135E-05
+/gps/hist/point   9.000000E+01   9.055452E-05
+/gps/hist/point   1.000000E+02   1.036901E-04
+/gps/hist/point   1.100000E+02   1.167265E-04
+/gps/hist/point   1.200000E+02   1.295970E-04
+/gps/hist/point   1.400000E+02   1.546543E-04
+/gps/hist/point   1.600000E+02   1.785681E-04
+/gps/hist/point   1.800000E+02   2.012002E-04
+/gps/hist/point   2.000000E+02   2.224625E-04
+/gps/hist/point   2.200000E+02   2.423550E-04
+/gps/hist/point   2.500000E+02   2.696240E-04
+/gps/hist/point   2.800000E+02   2.939525E-04
+/gps/hist/point   3.200000E+02   3.221138E-04
+/gps/hist/point   3.500000E+02   3.402973E-04
+/gps/hist/point   4.000000E+02   3.655808E-04
+/gps/hist/point   4.500000E+02   3.853980E-04
+/gps/hist/point   5.000000E+02   4.005656E-04
+/gps/hist/point   5.500000E+02   4.118000E-04
+/gps/hist/point   6.300000E+02   4.230846E-04
+/gps/hist/point   7.100000E+02   4.279226E-04
+/gps/hist/point   8.000000E+02   4.276461E-04
+/gps/hist/point   9.000000E+02   4.222175E-04
+/gps/hist/point   1.000000E+03   4.130692E-04
+/gps/hist/point   1.100000E+03   4.014578E-04
+/gps/hist/point   1.200000E+03   3.882883E-04
+/gps/hist/point   1.400000E+03   3.596747E-04
+/gps/hist/point   1.600000E+03   3.305207E-04
+/gps/hist/point   1.800000E+03   3.024725E-04
+/gps/hist/point   2.000000E+03   2.762842E-04
+/gps/hist/point   2.200000E+03   2.522448E-04
+/gps/hist/point   2.500000E+03   2.202885E-04
+/gps/hist/point   2.800000E+03   1.929189E-04
+/gps/hist/point   3.200000E+03   1.625586E-04
+/gps/hist/point   3.500000E+03   1.436587E-04
+/gps/hist/point   4.000000E+03   1.179919E-04
+/gps/hist/point   4.500000E+03   9.800638E-05
+/gps/hist/point   5.000000E+03   8.226323E-05
+/gps/hist/point   5.500000E+03   6.971822E-05
+/gps/hist/point   6.300000E+03   5.447396E-05
+/gps/hist/point   7.100000E+03   4.340047E-05
+/gps/hist/point   8.000000E+03   3.428734E-05
+/gps/hist/point   9.000000E+03   2.695361E-05
+/gps/hist/point   1.000000E+04   2.159656E-05
+/gps/hist/point   1.100000E+04   1.758915E-05
+/gps/hist/point   1.200000E+04   1.452924E-05
+/gps/hist/point   1.400000E+04   1.027238E-05
+/gps/hist/point   1.600000E+04   7.549373E-06
+/gps/hist/point   1.800000E+04   5.722725E-06
+/gps/hist/point   2.000000E+04   4.449375E-06
+/gps/hist/point   3.000000E+04   1.641042E-06
+/gps/hist/point   4.000000E+04   7.908394E-07
+/gps/hist/point   5.000000E+04   4.445856E-07
+/gps/hist/point   6.000000E+04   2.762717E-07
+/gps/hist/point   7.000000E+04   1.842230E-07
+/gps/hist/point   8.000000E+04   1.294336E-07
+/gps/hist/point   9.000000E+04   9.468383E-08
+/gps/hist/point   1.000000E+05   7.151647E-08
+/gps/hist/inter  Lin
+/gps/ang/type cos
+/gps/ang/mintheta    0.000E+00 deg
+/gps/ang/maxtheta    9.000E+01 deg
+/gps/source/list
+/control/alias  NORM_FACTOR_SPECTRUM "   7.876719E+06 "
+/control/alias  NORM_FACTOR_ANGULAR "   2.500000E-01 "
+/gps/position 0 0 50 cm
+/run/beamOn 10
+/run/beamOn 100
+/run/beamOn 1000
+/run/beamOn 10000
+/vis/disable
+/run/beamOn 100000
+/run/beamOn 1000000
+/run/beamOn 10000000
+/gps/pos/type Surface
+/gps/pos/shape Sphere
+/gps/pos/centre 0 0 0 cm
+/gps/pos/radius 50 cm
+/vis/enable
+/run/beamOn 100
+/run/beamOn 1000
+/run/beamOn 500
+/vis/viewer/set/picking false
+/vis/viewer/refresh
+/vis/viewer/set/picking false
+/vis/viewer/refresh
+/vis/disable
+/run/beamOn 10000
+/run/beamOn 100000
+/run/beamOn 1000000
+/run/beamOn 10000000
